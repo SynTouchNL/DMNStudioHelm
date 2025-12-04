@@ -1,5 +1,5 @@
-fullnameOverride: ""
-nameOverride: ""
+fullnameOverride: "DMNStudio"
+nameOverride: "DMNStudio"
 
 backend:
   image: ghcr.io/syntouchnl/dmn-studio-backend:latest
