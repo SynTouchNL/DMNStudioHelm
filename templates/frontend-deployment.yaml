@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "DMNStudioHelm.fullname" . }}-frontend
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "DMNStudioHelm.fullname" . }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ include "DMNStudioHelm.fullname" . }}-frontend
+    spec:
+      securityContext: {{- toYaml .Values.backend.security.securityContext | nindent 12 }}
+      containers:
+        - name: frontend
+          securityContext: {{- toYaml .Values.backend.security.container.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.image }}"
+          env:
+            - name: API_URL
+              value: "http://{{ include "DMNStudioHelm.fullname" . }}-backend:{{ .Values.backend.servicePort }}"
+          ports:
+            - containerPort: 80
+      volumes:
+         {{- toYaml .Values.backend.volumes | nindent 10 }}
+      resources:
+        {{- toYaml .Values.frontend.resources | nindent 12 }}

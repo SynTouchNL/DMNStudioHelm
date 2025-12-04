@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "DMNStudioHelm.fullname" . }}-backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "DMNStudioHelm.fullname" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "DMNStudioHelm.fullname" . }}-backend
+    spec:
+      securityContext: {{- toYaml .Values.backend.security.securityContext | nindent 12 }}
+      containers:
+          - name: backend
+            securityContext: {{- toYaml .Values.backend.security.container.securityContext | nindent 12 }}
+            image: "{{ .Values.backend.image }}"
+            ports:
+              - containerPort: {{ .Values.backend.servicePort }}
+      volumes:
+        {{- toYaml .Values.backend.volumes | nindent 10 }}
+      resources:
+        {{- toYaml .Values.backend.resources | nindent 12 }}

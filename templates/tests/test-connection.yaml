@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "DMNStudioHelm.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "DMNStudioHelm.fullname" . }}:{{ .Values.frontend.port }}', '{{ include "DMNStudioHelm.fullname" . }}:{{ .Values.backend.port }}']
   restartPolicy: Never
