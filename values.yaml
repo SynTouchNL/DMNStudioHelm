@@ -1,4 +1,4 @@
-# Default values for DMNStudioHelm.
+# Default values for dmnstudiohelm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,17 +7,41 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: ghcr.io/syntouchnl/dmn-studio-backend
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest-native"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
+
+backend:
+  config:
+      # Database Configuration
+      QUARKUS_DATASOURCE_JDBC_URL: #jdbc:postgresql://postgres-dmn-studio:5432/dmn-studio
+      QUARKUS_DATASOURCE_USERNAME: 
+      QUARKUS_DATASOURCE_PASSWORD: 
+      
+      # Keycloak OIDC Configuration
+      QUARKUS_OIDC_AUTH_SERVER_URL: #http://keycloak:8181/realms/dmn_studio
+      QUARKUS_OIDC_CLIENT_ID: 
+      QUARKUS_OIDC_CREDENTIALS_SECRET: 
+      
+      # Operaton REST API Configuration
+      QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL: #http://operaton:8085/engine-rest
+      QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME: 
+      QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD: 
+      
+      # Keycloak Admin API Configuration
+      QUARKUS_REST_CLIENT_KEYCLOAK_API_URL: #http://keycloak:8181
+    
+frontend: ""
+  
+
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
@@ -54,7 +78,7 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  port: 8080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -127,11 +151,15 @@ resources: {}
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

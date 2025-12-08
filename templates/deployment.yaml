@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "DMNStudioHelm.fullname" . }}
+  name: {{ include "dmnstudiohelm.fullname" . }}
   labels:
-    {{- include "DMNStudioHelm.labels" . | nindent 4 }}
+    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "DMNStudioHelm.selectorLabels" . | nindent 6 }}
+      {{- include "dmnstudiohelm.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "DMNStudioHelm.labels" . | nindent 8 }}
+        {{- include "dmnstudiohelm.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "DMNStudioHelm.serviceAccountName" . }}
+      serviceAccountName: {{ include "dmnstudiohelm.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -60,6 +60,37 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          env:
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: {{ .Values.backend.config.QUARKUS_DATASOURCE_JDBC_URL }}
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: {{ .Values.backend.config.QUARKUS_DATASOURCE_USERNAME }}
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                 name: {{ .Values.backend.config.secretfile }}
+                 key: QUARKUS_DATASOURCE_PASSWORD
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              value: {{ .Values.backend.config.QUARKUS_OIDC_AUTH_SERVER_URL }}
+            - name: QUARKUS_OIDC_CLIENT_ID
+              value: {{ .Values.backend.config.QUARKUS_OIDC_CLIENT_ID }}
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                secretKeyRef:
+                 name: {{ .Values.backend.config.secretfile }}
+                 key: QUARKUS_OIDC_CREDENTIALS_SECRET
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL }}
+            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME
+              value: {{ .Values.backend.config.QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME }}
+            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                 name: {{ .Values.backend.config.secretfile }}
+                 key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
+            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
+
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

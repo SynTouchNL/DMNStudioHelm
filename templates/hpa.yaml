@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "DMNStudioHelm.fullname" . }}
+  name: {{ include "dmnstudiohelm.fullname" . }}
   labels:
-    {{- include "DMNStudioHelm.labels" . | nindent 4 }}
+    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "DMNStudioHelm.fullname" . }}
+    name: {{ include "dmnstudiohelm.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
