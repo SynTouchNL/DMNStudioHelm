@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 global:
   image:
-    repository: ghcr.io/syntouchnl/dmn-studio-backend
+    repository: ghcr.io/syntouchnl
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
@@ -23,6 +23,7 @@ backend:
   image:
     # Only override if you want to override global
     repository: 
+    name: dmn-studio-backend
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest-native"
   config:
@@ -50,34 +51,6 @@ backend:
     type: ClusterIP
     # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
     port: 8080
-  
-  # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
-  ingress:
-    enabled: true
-    className: "nginx"
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: dmnstudio.dmn.studio
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-    tls: []
-      # - secretName: chart-example-tls
-      #   hosts:
-      #     - chart-example.local
-  resources: {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
     
   # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
   livenessProbe:
@@ -114,9 +87,106 @@ backend:
     #   mountPath: "/etc/foo"
     #   readOnly: true
     
-frontend: ""
+frontend: 
+  # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+  replicaCount: 1
   
+  image:
+    # Only override if you want to override global
+    repository:
+    name: dmn-studio-frontend
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
 
+  config:
+      # Database Configuration
+      NG_APP_ENV: development
+      DMNSTUDIO_URL: http://dmnstudio.dmn.studio/ui
+      DMNSTUDIO_KEYCLOAK_URL: http://keycloak.dmn.studio/
+      DMNSTUDIO_KEYCLOAK_REALM: dmn_studio
+      DMNSTUDIO_KEYCLOAK_CLIENT_ID: angular-frontend
+      DMNSTUDIO_QUARKUS_URL: http://dmnstudio.dmn.studio/backend
+      
+  # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+  service:
+    # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+    type: ClusterIP
+    # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+    port: 8080
+    
+  # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 8080
+    #initialDelaySeconds: 5
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 8080
+    #initialDelaySeconds: 5
+    periodSeconds: 10
+  
+  # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  
+  # Additional volumes on the output Deployment definition.
+  volumes: []
+    # - name: foo
+    #   secret:
+    #     secretName: mysecret
+    #     optional: false
+  
+  # Additional volumeMounts on the output Deployment definition.
+  volumeMountsvolumeMounts: []
+    # - name: foo
+    #   mountPath: "/etc/foo"
+    #   readOnly: true
+
+### Config for FE & BE together
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: "/"
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  hosts:
+    - host: dmnstudio.dmn.studio
+      paths: 
+        - path: /ui(/|$)(.*)
+          servicesuffix: frontend
+          pathType: ImplementationSpecific
+          port: 8080
+        - path: /backend(/|$)(.*)
+          servicesuffix: backend
+          pathType: ImplementationSpecific
+          port: 8080
+  tls: []
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:

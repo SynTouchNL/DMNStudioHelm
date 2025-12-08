@@ -1,7 +1,8 @@
+#TODO; fix selectorLabels for FE & BE
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "dmnstudiohelm.fullname" . }}
+  name: {{ include "dmnstudiohelm.fullname" . }}-backend
   labels:
     {{- include "dmnstudiohelm.labels" . | nindent 4 }}
 spec:
@@ -13,3 +14,21 @@ spec:
       name: http
   selector:
     {{- include "dmnstudiohelm.selectorLabels" . | nindent 4 }}
+    instancename: {{ .Values.backend.image.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dmnstudiohelm.fullname" . }}-frontend
+  labels:
+    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: {{ .Values.frontend.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "dmnstudiohelm.selectorLabels" . | nindent 4 }}
+    instancename: {{ .Values.frontend.image.name }}
