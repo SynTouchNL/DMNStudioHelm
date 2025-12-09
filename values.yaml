@@ -137,17 +137,19 @@ frontend:
     # targetMemoryUtilizationPercentage: 80
   
   # Additional volumes on the output Deployment definition.
-  volumes: []
-    # - name: foo
-    #   secret:
-    #     secretName: mysecret
-    #     optional: false
+  #volumes: 
+  #  - name: nginxconf
+  #    configMap:
+  #      # Provide the name of the ConfigMap containing the files you want
+  #      # to add to the container
+  #      name: nginxconf
   
   # Additional volumeMounts on the output Deployment definition.
-  volumeMountsvolumeMounts: []
-    # - name: foo
-    #   mountPath: "/etc/foo"
-    #   readOnly: true
+  #volumeMounts:
+  #  - name: nginxconf
+  #    mountPath: "/etc/nginx/nginx.conf"
+  #    subPath: nginx.conf
+  #    readOnly: true
 
 ### Config for FE & BE together
 
@@ -159,16 +161,16 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     #nginx.ingress.kubernetes.io/rewrite-target: "/"
-    #nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
   hosts:
     - host: dmnstudio.dmn.studio
       paths: 
-        - path: /ui(/|$)(.*)
+        - path: /(.*)
           servicesuffix: frontend
           pathType: ImplementationSpecific
           port: 8080
-        - path: /backend(/|$)(.*)
+        - path: /api(?:/|$)(.*)
           servicesuffix: backend
           pathType: ImplementationSpecific
           port: 8080
