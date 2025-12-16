@@ -27,6 +27,7 @@ backend:
     # Overrides the image tag whose default is the chart appVersion.
     tag: "latest-native"
   config:
+      secretfile: "dmndbsecret"
       # Database Configuration
       QUARKUS_DATASOURCE_JDBC_URL: #jdbc:postgresql://postgres-dmn-studio:5432/dmn-studio
       QUARKUS_DATASOURCE_USERNAME: 
@@ -136,6 +137,15 @@ frontend:
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
   
+  
+  volumeMounts:
+  - name: config-volume
+    mountPath: /usr/share/nginx/html/config.json
+    subPath: config.json
+  volumes:
+  - name: config-volume
+    configMap:
+      name: frontend-config
   # Additional volumes on the output Deployment definition.
   #volumes: 
   #  - name: nginxconf
