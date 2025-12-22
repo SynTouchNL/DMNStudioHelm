@@ -1,0 +1,20 @@
+{{- range $nameSuffix, $values := $.Values.syncAKV }}
+---
+apiVersion: spv.no/v2beta1
+kind: AzureKeyVaultSecret
+metadata:
+  name: {{ $.Release.Name }}-{{ $nameSuffix }}
+spec:
+  vault:
+    name: {{ $values.vaultname }}
+    object:
+      {{- if $values.contenttype }}
+      contentType: {{ $values.contenttype }}
+      {{- end }}
+      name: {{ $values.objectname }}
+      type: {{ $values.objecttype }}
+  {{- with $values.output }}
+  output:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
