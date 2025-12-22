@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  dmnstudiohelm:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-12-22T11:49:53.9500326+01:00"
+    description: A Helm chart for Kubernetes
+    digest: 13c9db72477a95fd4fad97249a9bfa886dff6be712fda08f7a631c4eabd53113
+    name: dmnstudiohelm
+    type: application
+    urls:
+    - dmnstudiohelm-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-22T11:49:53.9488851+01:00"
