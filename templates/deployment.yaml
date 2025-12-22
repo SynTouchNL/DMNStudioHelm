@@ -180,8 +180,8 @@ spec:
           {{- end }}
       volumes:
       - name: config-volume
-        configMap:
-        name: {{ .Release.Name }}-configmap
+        configMap: 
+          name: {{ .Release.Name }}-configmap
       {{- with .Values.frontend.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
