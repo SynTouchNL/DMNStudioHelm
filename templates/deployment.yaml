@@ -171,25 +171,18 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.frontend.volumeMounts }}
           volumeMounts:
+          - name: config-volume
+            mountPath: /usr/share/nginx/html/config.json
+            subPath: config.json
+          {{- with .Values.frontend.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          env:
-            - name: NG_APP_ENV
-              value: {{ .Values.frontend.config.NG_APP_ENV }}
-            - name: DMNSTUDIO_URL
-              value: {{ .Values.frontend.config.DMNSTUDIO_URL }}
-            - name: DMNSTUDIO_KEYCLOAK_URL
-              value: {{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_URL }}
-            - name: DMNSTUDIO_KEYCLOAK_REALM
-              value: {{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_REALM }}
-            - name: DMNSTUDIO_KEYCLOAK_CLIENT_ID
-              value: {{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_CLIENT_ID }}
-            - name: DMNSTUDIO_QUARKUS_URL
-              value: {{ .Values.frontend.config.DMNSTUDIO_QUARKUS_URL }}
-      {{- with .Values.frontend.volumes }}
       volumes:
+      - name: config-volume
+        configMap:
+        name: {{ .Release.Name }}-configmap
+      {{- with .Values.frontend.extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}

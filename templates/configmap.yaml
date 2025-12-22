@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  config.json: |
+    {
+        "keycloak": {
+            "url": "{{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_URL }}",
+            "realm": "{{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_REALM }}",
+            "clientId": "{{ .Values.frontend.config.DMNSTUDIO_KEYCLOAK_CLIENT_ID }}"
+        },
+        "redirect": "{{ .Values.frontend.config.DMNSTUDIO_URL }}",
+        "backendUrl": "{{ .Values.frontend.config.DMNSTUDIO_QUARKUS_URL }}"
+    }

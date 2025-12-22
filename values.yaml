@@ -100,13 +100,11 @@ frontend:
     tag: "latest"
 
   config:
-      # Database Configuration
-      NG_APP_ENV: development
-      DMNSTUDIO_URL: http://dmnstudio.dmn.studio/ui
-      DMNSTUDIO_KEYCLOAK_URL: http://keycloak.dmn.studio/
+      DMNSTUDIO_URL: https://dmnstudio.dmn.studio/
+      DMNSTUDIO_KEYCLOAK_URL: https://keycloak.dmn.studio/
       DMNSTUDIO_KEYCLOAK_REALM: dmn_studio
       DMNSTUDIO_KEYCLOAK_CLIENT_ID: angular-frontend
-      DMNSTUDIO_QUARKUS_URL: http://dmnstudio.dmn.studio/backend
+      DMNSTUDIO_QUARKUS_URL: https://dmnstudio.dmn.studio/api
       
   # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
   service:
@@ -137,17 +135,8 @@ frontend:
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
   
-  
-  volumeMounts:
-  - name: config-volume
-    mountPath: /usr/share/nginx/html/config.json
-    subPath: config.json
-  volumes:
-  - name: config-volume
-    configMap:
-      name: frontend-config
   # Additional volumes on the output Deployment definition.
-  #volumes: 
+  #extraVolumes: 
   #  - name: nginxconf
   #    configMap:
   #      # Provide the name of the ConfigMap containing the files you want
@@ -155,7 +144,7 @@ frontend:
   #      name: nginxconf
   
   # Additional volumeMounts on the output Deployment definition.
-  #volumeMounts:
+  #extraVolumeMounts:
   #  - name: nginxconf
   #    mountPath: "/etc/nginx/nginx.conf"
   #    subPath: nginx.conf
