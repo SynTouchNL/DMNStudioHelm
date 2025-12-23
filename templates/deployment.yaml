@@ -92,7 +92,8 @@ spec:
                  key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
             - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
-
+            - name: QUARKUS_HTTP_ROOT_PATH
+              value: {{ .Values.backend.config.QUARKUS_HTTP_ROOT_PATH }}
       {{- with .Values.backend.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

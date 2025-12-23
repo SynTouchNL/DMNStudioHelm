@@ -44,6 +44,8 @@ backend:
       # Keycloak Admin API Configuration
       QUARKUS_REST_CLIENT_KEYCLOAK_API_URL: #http://keycloak:8181
       
+      QUARKUS_HTTP_ROOT_PATH: /api
+      
   service:
     type: ClusterIP
     port: 8080
