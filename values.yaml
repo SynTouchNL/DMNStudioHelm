@@ -153,18 +153,17 @@ ingress:
   enabled: true
   className: "nginx"
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+
   hosts:
     - host: dmnstudio.dmn.studio
       paths: 
-        - path: /(.*)
+        - path: /
           servicesuffix: frontend
-          pathType: ImplementationSpecific
+          pathType: Prefix
           port: 8080
-        - path: /api(?:/|$)(.*)
+        - path: /api
           servicesuffix: backend
-          pathType: ImplementationSpecific
+          pathType: Prefix
           port: 8080
   tls: []
     # - secretName: chart-example-tls
