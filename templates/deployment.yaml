@@ -73,7 +73,7 @@ spec:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_DATASOURCE_PASSWORD
             - name: QUARKUS_OIDC_AUTH_SERVER_URL
-              value: {{ .Values.backend.config.QUARKUS_OIDC_AUTH_SERVER_URL }}
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL | trimSuffix "/" }}/realms/{{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
             - name: QUARKUS_OIDC_CLIENT_ID
               value: {{ .Values.backend.config.QUARKUS_OIDC_CLIENT_ID }}
             - name: QUARKUS_OIDC_CREDENTIALS_SECRET
@@ -92,8 +92,8 @@ spec:
                  key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
             - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
-            - name: QUARKUS_HTTP_ROOT_PATH
-              value: {{ .Values.backend.config.QUARKUS_HTTP_ROOT_PATH }}
+            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
       {{- with .Values.backend.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

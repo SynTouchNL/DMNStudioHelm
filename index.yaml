@@ -3,9 +3,19 @@ entries:
   dmnstudiohelm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-23T12:18:37.8730015+01:00"
+    created: "2025-12-23T14:07:21.7344659+01:00"
     description: A Helm chart for Kubernetes
-    digest: 3d4c993bc2dfc37a1ff446a69e595488c3949393f8955286a95216d283b4036d
+    digest: 823480880cc815aa67d7b5dfb6791cbf18caf7377e33ebe3b8a1d01a4c63feba
+    name: dmnstudiohelm
+    type: application
+    urls:
+    - dmnstudiohelm-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-12-23T14:07:21.7334184+01:00"
+    description: A Helm chart for Kubernetes
+    digest: 2f9407e6b614b08a840cf0cb525cce8dd68ec0cfabc14667465ab9bf3edffbbe
     name: dmnstudiohelm
     type: application
     urls:
@@ -13,7 +23,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-23T12:18:37.8719636+01:00"
+    created: "2025-12-23T14:07:21.7318452+01:00"
     description: A Helm chart for Kubernetes
     digest: f545ce561c750f9a8c55e69df9d8c01bbe404e18fc89afa61ca97a4f0948e3dc
     name: dmnstudiohelm
@@ -23,7 +33,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-23T12:18:37.8709182+01:00"
+    created: "2025-12-23T14:07:21.7313215+01:00"
     description: A Helm chart for Kubernetes
     digest: 0d774a67800ec4070b5aeca70226fc3512dca269fa4f8c4225e7e153892964bb
     name: dmnstudiohelm
@@ -31,4 +41,4 @@ entries:
     urls:
     - dmnstudiohelm-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-23T12:18:37.8698845+01:00"
+generated: "2025-12-23T14:07:21.7302796+01:00"

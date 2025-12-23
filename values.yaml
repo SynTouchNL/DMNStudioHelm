@@ -34,8 +34,8 @@ backend:
       QUARKUS_DATASOURCE_USERNAME: 
       
       # Keycloak OIDC Configuration
-      QUARKUS_OIDC_AUTH_SERVER_URL: #http://keycloak:8181/realms/dmn_studio
-      QUARKUS_OIDC_CLIENT_ID:  
+      QUARKUS_OIDC_CLIENT_ID: 
+      QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM: dmn_studio
       
       # Operaton REST API Configuration
       QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL: #http://operaton:8085/engine-rest
@@ -44,20 +44,18 @@ backend:
       # Keycloak Admin API Configuration
       QUARKUS_REST_CLIENT_KEYCLOAK_API_URL: #http://keycloak:8181
       
-      QUARKUS_HTTP_ROOT_PATH: /api
-      
   service:
     type: ClusterIP
     port: 8080
 
   livenessProbe:
     httpGet:
-      path: /q/health/live
+      path: /api/q/health/live
       port: 8080
     periodSeconds: 10
   readinessProbe:
     httpGet:
-      path: /q/health/ready
+      path: /api/q/health/ready
       port: 8080
     periodSeconds: 10
 
