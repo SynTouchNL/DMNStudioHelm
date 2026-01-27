@@ -31,3 +31,8 @@ QUARKUS_DATASOURCE_PASSWORD:
 QUARKUS_OIDC_CREDENTIALS_SECRET
 QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
 ```
+
+## Licensing
+Copyright © 2026 SynTouch B.V.
+
+This project is licensed under the European Union Public Licence (EUPL) Version 1.2 or later — see the [LICENSE](LICENSE) file for details.
