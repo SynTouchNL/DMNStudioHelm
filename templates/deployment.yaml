@@ -81,8 +81,15 @@ spec:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_OIDC_CREDENTIALS_SECRET
-            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL }}
+            # Operaton config
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL }}
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL }}
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL }}
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL }}
             - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME
               value: {{ .Values.backend.config.QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME }}
             - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
@@ -90,6 +97,7 @@ spec:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
+            # Keycloak config
             - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
             - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM

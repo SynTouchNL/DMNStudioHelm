@@ -13,9 +13,17 @@ git commit ....
 ```
 
 # Using chart:
+For the operaton instance used for testing, build a version of Operaton run including the operaton keycloak jar. 
+See https://github.com/SynTouchNL/dmn-operaton-helm for more information.
+
+```
 helm repo add dmnstudio 'https://raw.githubusercontent.com/SynTouchNL/DMNStudioHelm/main'
 helm repo update
 helm search repo dmnstudio/dmnstudio
+```
+
+// TODO
+`helm install --dependency-update dmnstudio ./ --namespace dmn -f .\myvalues.yaml`
 
 # Configuration
 ## Prerequisites
@@ -25,11 +33,12 @@ helm search repo dmnstudio/dmnstudio
 
 ## Secrets
 The chart provides functionality for using akv secrets. Use this or ensure the secret for dmnStudio is already in place.
-The secret file should contain these secrest:
+The secret file should contain these secrets:
 ```
-QUARKUS_DATASOURCE_PASSWORD: 
+QUARKUS_DATASOURCE_PASSWORD
 QUARKUS_OIDC_CREDENTIALS_SECRET
 QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
+OPERATON_KEYCLOAK_CLIENT_SECRET
 ```
 
 ## Licensing

@@ -38,8 +38,12 @@ backend:
       QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM: dmn_studio
       
       # Operaton REST API Configuration
-      QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL: #http://operaton:8085/engine-rest
-      QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME: 
+      #QUARKUS_REST_CLIENT_OPERATON_REST_API_JSON_URL: #http://operaton:8085/engine-rest
+      QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL: operaton.dmn.studio
+      QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL: operaton.dmn.studio
+      QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL: operaton.dmn.studio
+      QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL: operaton.dmn.studio
+      QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME: demo
       
       # Keycloak Admin API Configuration
       QUARKUS_REST_CLIENT_KEYCLOAK_API_URL: #http://keycloak:8181
@@ -230,3 +234,57 @@ httpRoute:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+testoperaton:
+  enabled: true
+  
+  image:
+    repository: ghcr.io/syntouchnl/dmn-operaton-helm
+    tag: latest
+    pullPolicy: Always
+#    pullSecrets: []
+    command: ["./operaton.sh"]
+    args: ["--webapps", "--rest", "--oauth2", "--production"]
+  
+  #Have to declare due to a bug https://github.com/operaton/operaton-helm/issues/14
+  #Until fixed, run helm command with --skip-schema-validation
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    capabilities:
+      runAsNonRoot: null
+      runAsUser: null
+      drop:
+        - ALL
+
+  extraEnvs:
+    - name: OPERATON_BPM_RUN_EXAMPLE_ENABLED
+      value: "false"
+    - name: OPERATON_HOST_URL
+      value: "https://operaton.dmn.studio"
+    - name: OPERATON_KEYCLOAK_HOST
+      value: "https://keycloak.dmn.studio/"
+    - name: OPERATON_KEYCLOAK_REALM
+      value: dmn_studio
+    - name: OPERATON_KEYCLOAK_CLIENT_ID
+      value: 
+    - name: OPERATON_KEYCLOAK_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: dmnstudiosecrets
+          key: OPERATON_KEYCLOAK_CLIENT_SECRET
+
+  ingress:
+    enabled: true
+    annotations:
+      {}
+    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: operaton.dmn.studio
+        paths:
+          - /
+    tls: []
+    #  - secretName: operaton-tls
+    #    hosts:
+    #      - operaton.local
