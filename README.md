@@ -13,9 +13,11 @@ git commit ....
 ```
 
 # Using chart:
+```
 helm repo add dmnstudio 'https://raw.githubusercontent.com/SynTouchNL/DMNStudioHelm/main'
 helm repo update
 helm search repo dmnstudio/dmnstudio
+```
 
 # Configuration
 ## Prerequisites
