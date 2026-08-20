@@ -3,7 +3,23 @@ entries:
   dmnstudiohelm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-23T14:07:21.7344659+01:00"
+    created: "2026-08-20T08:36:41.054044+02:00"
+    dependencies:
+    - alias: testoperaton
+      condition: testoperaton.enabled
+      name: operaton
+      repository: https://operaton.github.io/operaton-helm/
+      version: 1.0.5
+    description: A Helm chart for Kubernetes
+    digest: f16b5dcc90f6959077da3148c6a6737a9e893b9fd73ab176d940f8f23534accb
+    name: dmnstudiohelm
+    type: application
+    urls:
+    - dmnstudiohelm-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-08-20T08:36:41.0487708+02:00"
     description: A Helm chart for Kubernetes
     digest: 823480880cc815aa67d7b5dfb6791cbf18caf7377e33ebe3b8a1d01a4c63feba
     name: dmnstudiohelm
@@ -13,7 +29,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-12-23T14:07:21.7334184+01:00"
+    created: "2026-08-20T08:36:41.0469179+02:00"
     description: A Helm chart for Kubernetes
     digest: 2f9407e6b614b08a840cf0cb525cce8dd68ec0cfabc14667465ab9bf3edffbbe
     name: dmnstudiohelm
@@ -21,4 +37,41 @@ entries:
     urls:
     - dmnstudiohelm-0.1.2.tgz
     version: 0.1.2
-generated: "2025-12-23T14:07:21.7302796+01:00"
+  operaton:
+  - annotations:
+      artifacthub.io/changes: ""
+      artifacthub.io/links: |
+        - name: Operaton BPM Helm chart
+          url: https://github.com/operaton/operaton-helm/tree/main/charts/operaton
+        - name: Operaton BPM Docker
+          url: https://github.com/operaton/operaton-docker
+        - name: Operaton BPM
+          url: https://github.com/operaton/operaton
+    apiVersion: v2
+    appVersion: 1.0.3
+    created: "2026-08-20T08:36:41.0551832+02:00"
+    description: 'Helm chart for Operaton '
+    digest: e5e230213ec83d37efae2b45a6334c5443cee79fa4f644416e8def3f962039e9
+    home: https://operaton.org
+    icon: https://operaton.github.io/operaton-helm/operaton-logo.png
+    keywords:
+    - bpm
+    - bpmn
+    - operaton
+    - operaton-engine
+    - dmn
+    - process-engine
+    - workflow
+    maintainers:
+    - name: Jaye
+      url: https://github.com/jmaster1985
+    name: operaton
+    sources:
+    - https://github.com/operaton/operaton-helm/tree/main/charts/operaton
+    - https://github.com/operaton/operaton-docker
+    - https://github.com/operaton/operaton
+    type: application
+    urls:
+    - charts/operaton-1.0.5.tgz
+    version: 1.0.5
+generated: "2026-08-20T08:36:41.0396596+02:00"
