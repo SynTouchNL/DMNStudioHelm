@@ -102,6 +102,9 @@ spec:
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
             - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
+            # Debug config
+            - name: QUARKUS_LOG_LEVEL
+              value: { { .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" | quote } }
       {{- with .Values.backend.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
