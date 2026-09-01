@@ -104,13 +104,13 @@ spec:
             # Quarkus Logging
             # ============================================================
             - name: QUARKUS_LOG_LEVEL
-              value: { { .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" | quote } }
+              value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" | quote }}
 
             # ============================================================
             # Operaton REST API
             # ============================================================
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL
-              value: { { .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL } }
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL }}
 
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL }}
