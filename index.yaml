@@ -3,7 +3,23 @@ entries:
   dmnstudiohelm:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-08-20T12:08:36.3491833+02:00"
+    created: "2026-09-01T14:11:39.7611586+02:00"
+    dependencies:
+    - alias: testoperaton
+      condition: testoperaton.enabled
+      name: operaton
+      repository: https://operaton.github.io/operaton-helm/
+      version: 1.0.5
+    description: A Helm chart for Kubernetes
+    digest: f9d47dc024f4bd053d8f66e93010c95eeda1b88071f63b7b2c1c13910f04e160
+    name: dmnstudiohelm
+    type: application
+    urls:
+    - dmnstudiohelm-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-09-01T14:11:39.7500407+02:00"
     dependencies:
     - alias: testoperaton
       condition: testoperaton.enabled
@@ -19,7 +35,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-08-20T12:08:36.3385086+02:00"
+    created: "2026-09-01T14:11:39.7396562+02:00"
     description: A Helm chart for Kubernetes
     digest: 823480880cc815aa67d7b5dfb6791cbf18caf7377e33ebe3b8a1d01a4c63feba
     name: dmnstudiohelm
@@ -29,7 +45,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-08-20T12:08:36.335046+02:00"
+    created: "2026-09-01T14:11:39.7373959+02:00"
     description: A Helm chart for Kubernetes
     digest: 2f9407e6b614b08a840cf0cb525cce8dd68ec0cfabc14667465ab9bf3edffbbe
     name: dmnstudiohelm
@@ -49,7 +65,7 @@ entries:
           url: https://github.com/operaton/operaton
     apiVersion: v2
     appVersion: 1.0.3
-    created: "2026-08-20T12:08:36.3498237+02:00"
+    created: "2026-09-01T14:11:39.7621905+02:00"
     description: 'Helm chart for Operaton '
     digest: e5e230213ec83d37efae2b45a6334c5443cee79fa4f644416e8def3f962039e9
     home: https://operaton.org
@@ -74,4 +90,4 @@ entries:
     urls:
     - charts/operaton-1.0.5.tgz
     version: 1.0.5
-generated: "2026-08-20T12:08:36.3327547+02:00"
+generated: "2026-09-01T14:11:39.7340789+02:00"

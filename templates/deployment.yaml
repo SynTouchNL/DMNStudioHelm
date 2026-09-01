@@ -63,6 +63,9 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
+            # ============================================================
+            # Quarkus JDBC
+            # ============================================================
             - name: QUARKUS_DATASOURCE_JDBC_URL
               value: {{ .Values.backend.config.QUARKUS_DATASOURCE_JDBC_URL }}
             - name: QUARKUS_DATASOURCE_USERNAME
@@ -72,38 +75,64 @@ spec:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_DATASOURCE_PASSWORD
+
+            # ============================================================
+            # Quarkus OIDC
+            # ============================================================
             - name: QUARKUS_OIDC_AUTH_SERVER_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL | trimSuffix "/" }}/realms/{{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
+
             - name: QUARKUS_OIDC_CLIENT_ID
               value: {{ .Values.backend.config.QUARKUS_OIDC_CLIENT_ID }}
+
             - name: QUARKUS_OIDC_CREDENTIALS_SECRET
               valueFrom:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_OIDC_CREDENTIALS_SECRET
-            # Operaton config
+
+            # ============================================================
+            # Quarkus Keycloak REST Client
+            # ============================================================
+            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
+
+            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM
+              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
+
+            # ============================================================
+            # Quarkus Logging
+            # ============================================================
+            - name: QUARKUS_LOG_LEVEL
+              value: { { .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" | quote } }
+
+            # ============================================================
+            # Operaton REST API
+            # ============================================================
+            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL
+              value: { { .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL } }
+
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL }}
-            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL }}
+
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL }}
+
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL }}
-            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME
-              value: {{ .Values.backend.config.QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME }}
-            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
+
+            # ============================================================
+            # Operaton Basic Auth
+            # ============================================================
+            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_USERNAME
+              value: {{ .Values.backend.config.QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_USERNAME }}
+
+            - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
-                 key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_PASSWORD
-            # Keycloak config
-            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_URL }}
-            - name: QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM }}
-            - name: QUARKUS_LOG_LEVEL
-              value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" | quote }}
+                 key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_PASSWORD
+
       {{- with .Values.backend.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
