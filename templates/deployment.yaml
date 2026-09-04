@@ -104,7 +104,7 @@ spec:
             # Quarkus Logging
             # ============================================================
             - name: QUARKUS.LOG.LEVEL
-              value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default INFO }}
+              value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" }}
 
             # ============================================================
             # Operaton REST API
