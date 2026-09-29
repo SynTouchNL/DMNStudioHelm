@@ -1,4 +1,3 @@
-#TODO; fix selectorLabels for FE & BE
 apiVersion: v1
 kind: Service
 metadata:
