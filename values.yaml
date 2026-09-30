@@ -256,14 +256,10 @@ testoperaton:
     command: ["./operaton.sh"]
     args: ["--webapps", "--rest", "--oauth2", "--production"]
 
-  #Have to declare due to a bug https://github.com/operaton/operaton-helm/issues/14
-  #Until fixed, run helm command with --skip-schema-validation
   securityContext:
     runAsNonRoot: true
     runAsUser: 1000
     capabilities:
-      runAsNonRoot: null
-      runAsUser: null
       drop:
         - ALL
 
