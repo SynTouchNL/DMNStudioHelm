@@ -1,0 +1,37 @@
+{{- range $component := list "backend" "frontend" }}
+{{- $componentValues := index $.Values $component }}
+{{- if $componentValues.autoscaling.enabled }}
+{{- $fullName := include "dmnstudiohelm.fullname" $ }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $fullName }}-{{ $component }}
+  labels:
+    {{- include "dmnstudiohelm.labels" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $fullName }}-{{ $component }}
+  minReplicas: {{ $componentValues.autoscaling.minReplicas }}
+  maxReplicas: {{ $componentValues.autoscaling.maxReplicas }}
+  metrics:
+    {{- if $componentValues.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $componentValues.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if $componentValues.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ $componentValues.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+{{- end }}
