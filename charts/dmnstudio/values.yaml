@@ -246,8 +246,6 @@ testoperaton:
 
   image:
     repository: ghcr.io/syntouchnl/dmn-operaton-helm
-    tag: latest
-    pullPolicy: Always
     #    pullSecrets: []
     command: ["./operaton.sh"]
     args: ["--webapps", "--rest", "--oauth2", "--production"]
