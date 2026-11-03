@@ -3,6 +3,22 @@ entries:
   dmnstudiohelm:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2026-11-03T13:13:22.471951453Z"
+    dependencies:
+    - alias: testoperaton
+      condition: testoperaton.enabled
+      name: operaton
+      repository: https://operaton.github.io/operaton-helm/
+      version: 1.2.0
+    description: Helm chart for DMN Studio
+    digest: f5f1df44148bc774b7f9d622cb313fdbe0da8a2feb5f3273f4089c5741162c99
+    name: dmnstudiohelm
+    type: application
+    urls:
+    - https://github.com/SynTouchNL/DMNStudioHelm/releases/download/dmnstudiohelm-0.1.10/dmnstudiohelm-0.1.10.tgz
+    version: 0.1.10
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2026-10-30T12:49:24.991370463Z"
     dependencies:
     - alias: testoperaton
@@ -33,4 +49,4 @@ entries:
     urls:
     - https://github.com/SynTouchNL/DMNStudioHelm/releases/download/dmnstudiohelm-0.1.8/dmnstudiohelm-0.1.8.tgz
     version: 0.1.8
-generated: "2026-10-30T12:49:24.991378076Z"
+generated: "2026-11-03T13:13:22.471963341Z"
