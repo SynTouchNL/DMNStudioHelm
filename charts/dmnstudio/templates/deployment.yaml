@@ -111,22 +111,13 @@ spec:
               value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" }}
 
             # ============================================================
-            # Operaton REST API
+            # Operaton Unit Test REST API
             # ============================================================
             - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL
               value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL }}
 
-            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL }}
-
-            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL }}
-
-            - name: QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL
-              value: {{ .Values.backend.config.QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL }}
-
             # ============================================================
-            # Operaton Basic Auth
+            # Operaton Unit Test Basic Auth
             # ============================================================
             - name: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_USERNAME
               value: {{ .Values.backend.config.QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_USERNAME }}
@@ -136,6 +127,15 @@ spec:
                 secretKeyRef:
                  name: {{ .Values.backend.config.secretfile }}
                  key: QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASICAUTH_PASSWORD
+
+            # ============================================================
+            # Environments encryption
+            # ============================================================
+            - name: DMN_STUDIO_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                 name: {{ .Values.backend.config.secretfile }}
+                 key: DMN_STUDIO_ENCRYPTION_KEY
 
       {{- with .Values.backend.volumes }}
       volumes:
