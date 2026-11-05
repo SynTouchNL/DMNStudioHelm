@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dmnstudiohelm.fullname" . }}-backend
+  name: {{ include "dmnstudio.fullname" . }}-backend
   labels:
-    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
+    {{- include "dmnstudio.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.backend.autoscaling.enabled }}
   replicas: {{ .Values.backend.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "dmnstudiohelm.selectorLabels" . | nindent 6 }}
+      {{- include "dmnstudio.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,7 +19,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "dmnstudiohelm.labels" . | nindent 8 }}
+        {{- include "dmnstudio.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -29,7 +29,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dmnstudiohelm.serviceAccountName" . }}
+      serviceAccountName: {{ include "dmnstudio.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
@@ -159,16 +159,16 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "dmnstudiohelm.fullname" . }}-frontend
+  name: {{ include "dmnstudio.fullname" . }}-frontend
   labels:
-    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
+    {{- include "dmnstudio.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.frontend.autoscaling.enabled }}
   replicas: {{ .Values.frontend.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "dmnstudiohelm.selectorLabels" . | nindent 6 }}
+      {{- include "dmnstudio.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -176,7 +176,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "dmnstudiohelm.labels" . | nindent 8 }}
+        {{- include "dmnstudio.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -186,7 +186,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "dmnstudiohelm.serviceAccountName" . }}
+      serviceAccountName: {{ include "dmnstudio.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

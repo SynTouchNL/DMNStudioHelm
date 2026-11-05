@@ -1,11 +1,11 @@
 {{- if .Values.httpRoute.enabled -}}
-{{- $fullName := include "dmnstudiohelm.fullname" . -}}
+{{- $fullName := include "dmnstudio.fullname" . -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "dmnstudiohelm.labels" . | nindent 4 }}
+    {{- include "dmnstudio.labels" . | nindent 4 }}
   {{- with .Values.httpRoute.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

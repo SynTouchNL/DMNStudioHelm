@@ -1,0 +1,165 @@
+# Only Unit Test (UT) operaton is deployed as a subchart in this release.
+# TEST, ACC and PROD operaton instances are external.
+
+global:
+  image:
+    repository: ghcr.io/syntouchnl
+
+image:
+  pullPolicy: Always
+
+# ---------------------------------------------------------------------------
+# Backend
+# ---------------------------------------------------------------------------
+backend:
+#  replicaCount: 1
+
+  image:
+    name: dmn-studio-backend
+    tag: "latest-native"   # pin to a specific digest/tag in production
+
+  config:
+    secretfile: "dmnstudiosecrets"
+
+    # Database Configuration
+    QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://postgres-dmn-studio:5432/dmn-studio"
+    QUARKUS_DATASOURCE_USERNAME: "dmnstudio"
+
+    # Keycloak OIDC Configuration
+    QUARKUS_OIDC_CLIENT_ID: "dmn-studio-backend"
+    QUARKUS_REST_CLIENT_KEYCLOAK_API_URL: "https://keycloak.dmn.studio"
+    QUARKUS_REST_CLIENT_KEYCLOAK_API_REALM: "dmn_studio"
+
+    # Unit Test (UT) operaton REST API Configuration
+    QUARKUS_REST_CLIENT_OPERATON_REST_API_UT_URL: "https://operaton-ut.dmn.studio/engine-rest"
+
+    # External Operaton REST API Configuration
+    QUARKUS_REST_CLIENT_OPERATON_REST_API_TEST_URL: "https://operaton-test.dmn.studio/engine-rest"
+    QUARKUS_REST_CLIENT_OPERATON_REST_API_ACC_URL:  "https://operaton-acc.dmn.studio/engine-rest"
+    QUARKUS_REST_CLIENT_OPERATON_REST_API_PROD_URL: "https://operaton-prod.dmn.studio/engine-rest"
+
+
+    QUARKUS_OPENAPI_GENERATOR_OPERATON_REST_API_JSON_AUTH_BASIC_AUTH_USERNAME: "demo"
+
+#  resources:
+#    requests:
+#      cpu: 250m
+#      memory: 512Mi
+#    limits:
+#      cpu: 1000m
+#      memory: 1Gi
+
+# ---------------------------------------------------------------------------
+# Frontend
+# ---------------------------------------------------------------------------
+frontend:
+  replicaCount: 1
+
+  image:
+    name: dmn-studio-frontend
+    tag: "latest"          # pin to a specific digest/tag in production
+
+  config:
+    DMNSTUDIO_URL:                "https://dmnstudio.dmn.studio/"
+    DMNSTUDIO_KEYCLOAK_URL:       "https://keycloak.dmn.studio/"
+    DMNSTUDIO_KEYCLOAK_REALM:     "dmn_studio"
+    DMNSTUDIO_KEYCLOAK_CLIENT_ID: "angular-frontend"
+    DMNSTUDIO_QUARKUS_URL:        "https://dmnstudio.dmn.studio/api"
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+# ---------------------------------------------------------------------------
+# DMN Studio secrets (frontend + backend)
+# ---------------------------------------------------------------------------
+syncAKV:
+  dmnstudiosecrets:
+    vaultname: kv-zgw-ota-weu-01
+    objectname: dmnstudio-test
+    objecttype: multi-key-value-secret
+    contenttype: application/x-yaml
+    output:
+      secret:
+        name: "dmnstudio"
+
+# ---------------------------------------------------------------------------
+# DMN Studio ingress (frontend + backend on the same host)
+# ---------------------------------------------------------------------------
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+  hosts:
+    - host: dmnstudio.dmn.studio
+      paths:
+        - path: /
+          servicesuffix: frontend
+          pathType: Prefix
+          port: 8080
+        - path: /api
+          servicesuffix: backend
+          pathType: Prefix
+          port: 8080
+  tls:
+    - secretName: dmnstudio-tls
+      hosts:
+        - dmnstudio.dmn.studio
+
+# ---------------------------------------------------------------------------
+# Operaton Unit Test (UT) — deployed as subchart
+# ---------------------------------------------------------------------------
+testoperaton:
+  enabled: false
+
+  image:
+    repository: ghcr.io/syntouchnl/dmn-operaton-helm
+    tag: latest
+    pullPolicy: Always
+    command: ["./operaton.sh"]
+    args: ["--webapps", "--rest", "--oauth2", "--production"]
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    capabilities:
+      runAsNonRoot: null
+      runAsUser: null
+      drop:
+        - ALL
+
+  extraEnvs:
+    - name: OPERATON_BPM_RUN_EXAMPLE_ENABLED
+      value: "false"
+#    - name: OPERATON_HOST_URL
+#      value: "https://operaton-ut.dmn.studio"
+    - name: OPERATON_KEYCLOAK_HOST
+      value: "https://keycloak.dmn.studio/"
+    - name: OPERATON_KEYCLOAK_REALM
+      value: "dmn_studio"
+    - name: OPERATON_KEYCLOAK_CLIENT_ID
+      value: "operaton-ut"
+    - name: OPERATON_KEYCLOAK_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: dmnstudiosecrets
+          key: OPERATON_UT_KEYCLOAK_CLIENT_SECRET
+
+#  ingress:
+#    enabled: true
+#    annotations:
+#      {}
+#    kubernetes.io/ingress.class: nginx
+#    hosts:
+#      - host: operaton-ut.dmn.studio
+#        paths:
+#          - /
+#    tls:
+#      - secretName: operaton-ut-tls
+#        hosts:
+#          - operaton-ut.dmn.studio

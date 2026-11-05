@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "dmnstudiohelm.name" -}}
+{{- define "dmnstudio.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "dmnstudiohelm.fullname" -}}
+{{- define "dmnstudio.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "dmnstudiohelm.chart" -}}
+{{- define "dmnstudio.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "dmnstudiohelm.labels" -}}
-helm.sh/chart: {{ include "dmnstudiohelm.chart" . }}
-{{ include "dmnstudiohelm.selectorLabels" . }}
+{{- define "dmnstudio.labels" -}}
+helm.sh/chart: {{ include "dmnstudio.chart" . }}
+{{ include "dmnstudio.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "dmnstudiohelm.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "dmnstudiohelm.name" . }}
+{{- define "dmnstudio.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "dmnstudio.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dmnstudiohelm.serviceAccountName" -}}
+{{- define "dmnstudio.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "dmnstudiohelm.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "dmnstudio.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
