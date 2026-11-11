@@ -109,6 +109,8 @@ spec:
             # ============================================================
             - name: QUARKUS_LOG_LEVEL
               value: {{ .Values.backend.config.QUARKUS_LOG_LEVEL | default "INFO" }}
+            - name: QUARKUS_LOG_MIN_LEVEL
+              value: {{ .Values.backend.config.QUARKUS_LOG_MIN_LEVEL | default "DEBUG" }}
 
             # ============================================================
             # Operaton Unit Test REST API
